@@ -16,14 +16,13 @@ A web-based interface for managing files on a Raspberry Pi or any network-attach
 
 - Simple file management for local directories
 - Basic file sharing within a small team
-- Educational tool for learning web development with FastAPI
 - Lightweight alternative to more complex file management systems
 
 ## Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/pinas.git
+   git clone https://github.com/raviteja-112/PiNAS.git
    cd pinas
    ```
 
