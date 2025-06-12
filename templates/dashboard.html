@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        h2 {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #555;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        form {
+            display: inline;
+        }
+        button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d32f2f;
+        }
+        .upload-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .upload-form input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .upload-form button {
+            background-color: #4CAF50;
+        }
+        .upload-form button:hover {
+            background-color: #45a049;
+        }
+        .logout-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .logout-link a {
+            color: #f44336;
+        }
+        .logout-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    <div style="padding: 20px;">
+        <h2>Current Path: {{ path }}</h2>
+        <ul>
+            {% if path != "/" %}
+                <li><a href="/dashboard?path={{ '/'.join(path.split('/')[:-2]) }}">.. (Parent Directory)</a></li>
+            {% endif %}
+            {% if files != None %}
+                {% for item in files %}
+                    <li>
+                        {% if item.is_dir %}
+                            <a href="/dashboard?path={{ path }}/{{ item.name }}">{{ item.name }}/</a>
+                        {% else %}
+                            <a href="/dashboard?path={{ path }}/{{ item.name }}">{{ item.name }}</a>
+                            <form action="/delete{{ path }}/{{ item.name }}" method="post" style="display:inline;">
+                                <button type="submit">Delete</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% else %}
+                <h1>No files</h1>
+            {% endif %}
+        </ul>
+        <div class="upload-form">
+            <h2>Upload New File</h2>
+            <form action="/upload/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="path" value="{{ path }}">
+                <input type="file" name="file" required><br><br>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+        <div class="logout-link">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
